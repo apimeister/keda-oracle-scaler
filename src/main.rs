@@ -71,7 +71,8 @@ impl ExternalScaler for ScalerService {
                     })); 
                 },
                 Err(_e) => {
-                    panic!("poison error, restarting...");
+                    log::error!("poison error, restarting...");
+                    std::process::exit(1);
                 }
             }
         }else{
