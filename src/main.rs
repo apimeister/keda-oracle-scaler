@@ -1,4 +1,3 @@
-
 use oracle::Connection;
 use service::external_scaler_server::ExternalScaler;
 use service::GetMetricSpecResponse;
