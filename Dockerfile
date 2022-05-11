@@ -1,4 +1,5 @@
 FROM rust as builder
+RUN apt-get update && apt install cmake -y
 RUN rustup component add rustfmt clippy
 WORKDIR /usr/lib/oracle
 RUN wget https://download.oracle.com/otn_software/linux/instantclient/instantclient-basiclite-linuxx64.zip

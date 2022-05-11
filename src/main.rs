@@ -75,7 +75,7 @@ impl ExternalScaler for ScalerService {
             log::debug!("{metric_value} from query \"{query}\"");
             return Ok(Response::new(GetMetricsResponse {
                 metric_values: vec![MetricValue{
-                    metric_name: "count".to_string(),
+                    metric_name: name,
                     metric_value: metric_value,
                 }],
             })); 
@@ -83,7 +83,7 @@ impl ExternalScaler for ScalerService {
             log::warn!("no query found in metadata: {:?}", scaled_object);
             Ok(Response::new(GetMetricsResponse {
                 metric_values: vec![MetricValue{
-                    metric_name: "count".to_string(),
+                    metric_name: name,
                     metric_value: 0,
                 }],
             }))
@@ -117,6 +117,7 @@ impl ExternalScaler for ScalerService {
         &self,
         _request: Request<ScaledObjectRef>,
     ) -> Result<Response<Self::StreamIsActiveStream>, Status> {
+        log::debug!("stream_is_active: not implemented");
         Err(Status::unimplemented("stream_is_active is not implemented"))
     }
     async fn get_metric_spec(
@@ -124,10 +125,11 @@ impl ExternalScaler for ScalerService {
         request: Request<ScaledObjectRef>,
     ) -> Result<Response<GetMetricSpecResponse>, Status> {
         let inner = request.into_inner();
+        let name = inner.name.clone();
         log::trace!("get_metric_spec: {:?}",inner);
         let result = GetMetricSpecResponse {
             metric_specs: vec![MetricSpec{
-                metric_name: "count".to_string(),
+                metric_name: name,
                 target_size: 1,
             }],
         };
