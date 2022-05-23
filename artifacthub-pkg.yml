@@ -1,0 +1,8 @@
+version: 0.1.0
+name: keda-oracle-scaler
+displayName: KEDA scaler for Oracle DB
+createdAt: 2022-05-23T11:39:00Z
+description: a external scaler for KEDA based Oracle DB queries
+license: APL-2
+keywords:
+  - oracle
