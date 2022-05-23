@@ -15,8 +15,8 @@ env_logger = "0.9"
 tokio = { version = "1", features = ["full"] }
 oracle = "0.5"
 protobuf = "3"
-grpc = "*"
-grpc-protobuf = "*"
+grpc = "0.8"
+grpc-protobuf = "0.8"
 tonic = { version = "0.7", features = ["compression","prost"] }
 prost = "0.10"
 serde = { version = "1.0", features = ["derive"] }
