@@ -6,7 +6,6 @@ authors = ["Jens Walter <jens@apimeister.com>"]
 license = "Apache-2.0"
 keywords = ["keda","kubernetes","oracle"]
 repository = "https://github.com/apimeister/keda-oracle-scaler"
-documentation = "https://docs.rs/keda-oracle-scaler"
 description = "Implements an external Scaler for KEDA for Oracle databases."
 
 [dependencies]
