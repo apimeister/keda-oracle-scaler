@@ -94,8 +94,10 @@ impl ExternalScaler for ScalerService {
         request: Request<ScaledObjectRef>,
     ) -> Result<Response<IsActiveResponse>, Status> {
         let inner = request.into_inner();
+        let name = inner.name;
         let metadata = inner.scaler_metadata.clone();
         let mut metric_value:i64 = 0;
+        log::debug!("{name}: {:?}", metadata);
         if metadata.contains_key("query"){
             let query = metadata.get("query").unwrap();
             metric_value = run_query(query).await;
