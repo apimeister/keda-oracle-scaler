@@ -68,11 +68,11 @@ impl ExternalScaler for ScalerService {
         let name = inner.metric_name;
         let scaled_object = inner.scaled_object_ref.unwrap();
         let metadata = scaled_object.scaler_metadata.clone();
-        log::debug!("{name}: {:?}", metadata);
+        log::debug!("get_metrics: {name}: {:?}", metadata);
         if metadata.contains_key("query"){
             let query = metadata.get("query").unwrap();
             let metric_value = run_query(query).await;
-            log::debug!("{metric_value} from query \"{query}\"");
+            log::debug!("get_metrics: {metric_value} from query \"{query}\"");
             return Ok(Response::new(GetMetricsResponse {
                 metric_values: vec![MetricValue{
                     metric_name: name,
@@ -80,7 +80,7 @@ impl ExternalScaler for ScalerService {
                 }],
             })); 
         }else{
-            log::warn!("no query found in metadata: {:?}", scaled_object);
+            log::warn!("get_metrics: no query found in metadata: {:?}", scaled_object);
             Ok(Response::new(GetMetricsResponse {
                 metric_values: vec![MetricValue{
                     metric_name: name,
@@ -97,13 +97,13 @@ impl ExternalScaler for ScalerService {
         let name = inner.name;
         let metadata = inner.scaler_metadata.clone();
         let mut metric_value:i64 = 0;
-        log::debug!("{name}: {:?}", metadata);
+        log::debug!("is_active: {name}: {:?}", metadata);
         if metadata.contains_key("query"){
             let query = metadata.get("query").unwrap();
             metric_value = run_query(query).await;
-            log::debug!("{metric_value} from query \"{query}\"");
+            log::debug!("is_active: {metric_value} from query \"{query}\"");
         }else{
-            log::warn!("no query found in metadata: {:?}", metadata);
+            log::warn!("is_active: no query found in metadata: {:?}", metadata);
         }
         if metric_value > 0 {
             Ok(Response::new(IsActiveResponse {
@@ -128,12 +128,14 @@ impl ExternalScaler for ScalerService {
     ) -> Result<Response<GetMetricSpecResponse>, Status> {
         let inner = request.into_inner();
         let name = inner.name.clone();
-        log::trace!("get_metric_spec: {:?}",inner);
+        log::debug!("get_metric_spec: {:?}",inner);
+        let resp = MetricSpec{
+            metric_name: name,
+            target_size: 1,
+        };
+        log::debug!("returning: {:?}",resp);
         let result = GetMetricSpecResponse {
-            metric_specs: vec![MetricSpec{
-                metric_name: name,
-                target_size: 1,
-            }],
+            metric_specs: vec![resp],
         };
         Ok(Response::new(result))
     }
