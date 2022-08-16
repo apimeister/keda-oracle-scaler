@@ -30,23 +30,30 @@ static DB_CONNECTION: Lazy<Mutex<Connection>> = Lazy::new(|| {
 async fn run_query(query: &str) -> i64 {
     match DB_CONNECTION.lock() {
         Ok(conn) => {
-            let rows = conn.query(query, &[]).unwrap();
-            let mut metric_value: i64 = 0;
-            let mut counter = 0;
-            for row_result in rows {
-                let row = row_result.unwrap();
-                counter += 1;
-                if counter== 1 {
-                    let first_column: Result<i64, _> = row.get(0);
-                    match first_column {
-                        Ok(value) => metric_value = value,
-                        Err(_) => metric_value = counter,
+            match conn.query(query, &[]) {
+                Ok(rows) => {
+                    let mut metric_value: i64 = 0;
+                    let mut counter = 0;
+                    for row_result in rows {
+                        let row = row_result.unwrap();
+                        counter += 1;
+                        if counter== 1 {
+                            let first_column: Result<i64, _> = row.get(0);
+                            match first_column {
+                                Ok(value) => metric_value = value,
+                                Err(_) => metric_value = counter,
+                            }
+                        }else{
+                            metric_value = counter;
+                        }
                     }
-                }else{
-                    metric_value = counter;
+                    return metric_value;
+                },
+                Err(err) => {
+                    log::error!("Error on statement: {} => {:?}",query,err);
+                    return 0;
                 }
             }
-            return metric_value;
         },
         Err(_e) => {
             log::error!("poison error, restarting...");
