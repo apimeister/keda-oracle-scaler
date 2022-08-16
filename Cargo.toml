@@ -31,4 +31,4 @@ once_cell = "1"
 
 [build-dependencies]
 protoc-rust-grpc = "0.8.2"
-tonic-build = { version = "0.7", features = ["prost", "compression"] }
+tonic-build = { version = "0.8", features = ["prost", "compression"] }
