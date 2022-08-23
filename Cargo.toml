@@ -1,6 +1,6 @@
 [package]
 name = "keda-oracle-scaler"
-version = "16.0.0"
+version = "17.0.0"
 edition = "2021"
 authors = ["Jens Walter <jens@apimeister.com>"]
 license = "Apache-2.0"

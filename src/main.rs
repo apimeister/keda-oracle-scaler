@@ -50,8 +50,20 @@ async fn run_query(query: &str) -> i64 {
                     return metric_value;
                 },
                 Err(err) => {
-                    log::error!("Error on statement: {} => {:?}",query,err);
-                    return 0;
+                    match err{
+                        oracle::Error::DpiError(err)=> {
+                            if err.message() =="DPI-1010: not connected" {
+                                panic!("connection lost");
+                            }else{
+                                log::error!("Error on statement: {} => {:?}",query,err);
+                                return 0;    
+                            }
+                        },
+                        _ => {
+                            log::error!("Error on statement: {} => {:?}",query,err);
+                            return 0;  
+                        }
+                    }
                 }
             }
         },
