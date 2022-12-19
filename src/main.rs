@@ -161,6 +161,7 @@ impl ExternalScaler for ScalerService {
 #[tokio::main]
 async fn main() {
     env_logger::init();
+    // test connection detail, so we can fail early
     {
         let _ = DB_CONNECTION.lock();
     }
