@@ -30,4 +30,4 @@ env-var = "1"
 once_cell = "1"
 
 [build-dependencies]
-tonic-build = { version = "0.9", features = ["prost"] }
+tonic-build = { version = "0.10", features = ["prost"] }
