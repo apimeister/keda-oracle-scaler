@@ -17,7 +17,7 @@ protobuf = "3"
 grpc = "0.8"
 grpc-protobuf = "0.8"
 tonic = { version = "0.9", features = ["gzip","prost"] }
-prost = "0.11"
+prost = "0.12"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 flate2 = "1"
